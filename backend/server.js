@@ -7,15 +7,24 @@ import eventRoutes from "./routes/eventRoutes.js";
 
 
 dotenv.config();  
-connectDB();  // Connect to MongoDB
+connectDB();  
 
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://eventify-bgzhjl7fo-krishna-dave206s-projects.vercel.app",
+  "https://eventify-ipwrjfoz6-krishna-dave206s-projects.vercel.app",
+  "https://eventify.vercel.app" // in case you set a custom domain
+];
+
 app.use(cors({
-  origin: [
-    "http://localhost:5173", 
-    "https://eventify-bgzhjl7fo-krishna-dave206s-projects.vercel.app"
-  ],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("CORS not allowed"));
+  },
   credentials: true
 }));
 
