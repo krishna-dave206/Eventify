@@ -13,7 +13,7 @@ export default function Register() {
 
   const handleRegister = async () => {
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post("https://eventify-6z70.onrender.com/api/auth/register", {
         name,
         email,
         password,

@@ -35,7 +35,7 @@ export default function Dashboard({}) {
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/events");
+      const res = await axios.get("https://eventify-6z70.onrender.com/api/events");
       setEvents(res.data || []);
     } catch (err) {
       console.log("Fetch error:", err);
@@ -69,13 +69,13 @@ export default function Dashboard({}) {
     try {
       if (editingId) {
         await axios.put(
-          `http://localhost:5000/api/events/${editingId}`,
+          `https://eventify-6z70.onrender.com/api/events/${editingId}`,
           { title, date, category, location },
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
         await axios.post(
-          "http://localhost:5000/api/events",
+          "https://eventify-6z70.onrender.com/api/events",
           { title, date, category, location },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -101,7 +101,7 @@ export default function Dashboard({}) {
   const deleteEvent = async (id) => {
     if (!confirm("Delete this event?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/events/${id}`, {
+      await axios.delete(`https://eventify-6z70.onrender.com/api/events/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       await fetchEvents();

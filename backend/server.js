@@ -12,7 +12,10 @@ connectDB();  // Connect to MongoDB
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",          // local dev
+    "https://eventify-frontend.vercel.app" // your vercel frontend (we’ll update name soon)
+  ],
   credentials: true
 }));
 
