@@ -13,8 +13,8 @@ const app = express();
 
 app.use(cors({
   origin: [
-    "http://localhost:5173",          // local dev
-    "https://eventify-frontend.vercel.app" // your vercel frontend (we’ll update name soon)
+    "http://localhost:5173", 
+    "https://eventify-bgzhjl7fo-krishna-dave206s-projects.vercel.app"
   ],
   credentials: true
 }));
