@@ -1,0 +1,77 @@
+.auth-container {
+  width: 380px;
+  padding: 36px;
+  border-radius: 16px;
+  background: #ffffff;
+
+  /* subtle clean shadow */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+
+  text-align: center;
+}
+
+/* Title */
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+/* Inputs */
+.input {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+.input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Button */
+.btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 18px;
+
+  background: #6366f1;
+  border-radius: 10px;
+
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  background: #4f46e5;
+}
+
+/* Bottom link */
+.link {
+  margin-top: 18px;
+  font-size: 15px;
+  color: #4b5563;
+}
+
+.link span {
+  color: #6366f1;
+  font-weight: 600;
+  cursor: pointer;
+}
