@@ -10,6 +10,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    console.log("Using backend:", API_URL);
     try {
       const res = await axios.post(`${API_URL}/api/auth/login`, {
         email,
