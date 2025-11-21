@@ -3,6 +3,7 @@ import axios from "axios";
 import { API_URL } from "../api";
 import "./Dashboard.css";
 
+
 export default function Dashboard() {
   const [events, setEvents] = useState([]);
   const [title, setTitle] = useState("");
