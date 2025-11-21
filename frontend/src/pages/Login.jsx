@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api";
 import { useNavigate } from "react-router-dom";
 import "./auth.css";
 
@@ -10,7 +11,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post("https://eventify-6z70.onrender.com/api/auth/login", {
+      const res = await axios.post(`${API_URL}/api/auth/login`, {
         email,
         password,
       });

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_URL } from "../api";
 import "./Dashboard.css";
 
 export default function Dashboard({}) {
@@ -35,7 +36,7 @@ export default function Dashboard({}) {
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get("https://eventify-6z70.onrender.com/api/events");
+      const res = await axios.get(`${API_URL}/api/events`);
       setEvents(res.data || []);
     } catch (err) {
       console.log("Fetch error:", err);
@@ -69,13 +70,13 @@ export default function Dashboard({}) {
     try {
       if (editingId) {
         await axios.put(
-          `https://eventify-6z70.onrender.com/api/events/${editingId}`,
+          `${API_URL}/api/events/${editingId}`,
           { title, date, category, location },
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
         await axios.post(
-          "https://eventify-6z70.onrender.com/api/events",
+          `${API_URL}/api/events`,
           { title, date, category, location },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -101,7 +102,7 @@ export default function Dashboard({}) {
   const deleteEvent = async (id) => {
     if (!confirm("Delete this event?")) return;
     try {
-      await axios.delete(`https://eventify-6z70.onrender.com/api/events/${id}`, {
+      await axios.delete(`${API_URL}/api/events/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       await fetchEvents();
@@ -185,8 +186,8 @@ export default function Dashboard({}) {
                 <p><b>Location:</b> {e.location}</p>
               </div>
               <div className="event-actions-new">
-                <button className="edit-icon" onClick={()=>startEdit(e)}>✏️</button>
-                <button className="delete-icon" onClick={()=>deleteEvent(e._id)}>🗑️</button>
+                <button className="edit-icon" onClick={()=>startEdit(e)}>Edit</button>
+                <button className="delete-icon" onClick={()=>deleteEvent(e._id)}>Delete</button>
               </div>
             </div>
           ))
