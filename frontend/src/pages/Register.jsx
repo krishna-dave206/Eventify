@@ -1,15 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
-import { API_URL } from "../api";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../api";
 import "./auth.css";
-
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -20,28 +18,30 @@ export default function Register() {
         password,
       });
 
-      navigate("/"); // go to login
+      alert("Registration successful! Please login.");
+      navigate("/login");
     } catch (err) {
+      console.log(err);
       alert("Registration failed");
     }
   };
 
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      width: "100vw",
-      height: "100vh"
-    }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
       <div className="auth-container">
-
-        <div className="title">Create Account</div>
-        <div className="subtitle">Join Eventify</div>
+        <h1 className="title">Eventify</h1>
+        <h2 className="subtitle">Register</h2>
 
         <input
           className="input"
-          placeholder="Full name"
+          placeholder="Name"
           onChange={(e) => setName(e.target.value)}
         />
 
@@ -62,10 +62,9 @@ export default function Register() {
           Register
         </button>
 
-        <div className="link">
-          Already have an account? <span onClick={() => navigate("/")}>Login</span>
-        </div>
-
+        <p className="link" onClick={() => navigate("/login")}>
+          Already have an account? <span>Login</span>
+        </p>
       </div>
     </div>
   );

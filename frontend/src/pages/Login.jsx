@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import { API_URL } from "../api";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../api";
 import "./auth.css";
 
 export default function Login() {
@@ -18,45 +18,46 @@ export default function Login() {
 
       localStorage.setItem("token", res.data.token);
       navigate("/dashboard");
-      
-    } catch {
+    } catch (err) {
+      console.log(err);
       alert("Login failed");
     }
   };
 
   return (
-    <div style = {{
+    <div
+      style={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-
-    }}>
-        <div className="auth-container">
+      }}
+    >
+      <div className="auth-container">
         <h1 className="title">Eventify</h1>
         <h2 className="subtitle">Login</h2>
 
         <input
-            className="input"
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
+          className="input"
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
-            className="input"
-            type="password"
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
+          className="input"
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button className="btn" onClick={handleLogin}>
-            Login
+          Login
         </button>
 
         <p className="link" onClick={() => navigate("/register")}>
-            Don’t have an account? <span>Register</span>
+          Don’t have an account? <span>Register</span>
         </p>
-        </div>
+      </div>
     </div>
   );
 }
