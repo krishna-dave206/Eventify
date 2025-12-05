@@ -8,33 +8,33 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#6366f1", // Vibrant Indigo
-        secondary: "#ec4899", // Hot Pink
-        accent: "#f59e0b", // Amber
-        success: "#10b981", // Emerald
-        danger: "#ef4444", // Red
-        warning: "#f59e0b", // Amber
-        info: "#3b82f6", // Blue
+        primary: "#6366f1",      // Refined Indigo - professional yet vibrant
+        secondary: "#ec4899",    // Rose Pink - elegant accent
+        accent: "#8b5cf6",       // Rich Purple - depth and sophistication
+        success: "#10b981",      // Emerald - clear positive feedback
+        danger: "#ef4444",       // Coral Red - attention without aggression
+        warning: "#f59e0b",      // Warm Amber
+        info: "#3b82f6",         // Clear Blue
         background: {
-          DEFAULT: "#fafafa", // Very Light Gray
-          dark: "#0a0a0a", // Almost Black
+          DEFAULT: "#f8fafc",    // Soft white with blue undertone
+          dark: "#0f172a",       // Deep slate - professional dark mode
         },
         surface: {
-          DEFAULT: "#f5f5f5", // Light Gray
-          dark: "#1a1a1a", // Dark Gray
+          DEFAULT: "#ffffff",    // Pure white for cards
+          dark: "#1e293b",       // Elevated dark surfaces
         },
         text: {
-          DEFAULT: "#1f2937", // Dark Gray
-          dark: "#f9fafb", // Very Light Gray
+          DEFAULT: "#0f172a",    // Rich slate for readability
+          dark: "#f1f5f9",       // Soft white for dark mode
         },
         muted: {
-          DEFAULT: "#6b7280", // Medium Gray
-          dark: "#9ca3af", // Light Gray
+          DEFAULT: "#64748b",    // Balanced slate
+          dark: "#94a3b8",       // Light slate for dark mode
         },
       },
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
-        display: ['Playfair Display', 'serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        display: ['Space Grotesk', 'sans-serif'],
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

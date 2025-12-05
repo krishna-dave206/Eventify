@@ -24,9 +24,12 @@ export default function Dashboard() {
   const [editLocation, setEditLocation] = useState("");
   const [editCategory, setEditCategory] = useState("");
 
+  // Delete confirmation modal
+  const [deletingEventId, setDeletingEventId] = useState(null);
+
   // Pagination & UI
   const [page, setPage] = useState(1);
-  const perPage = 3;
+  const perPage = 9;
 
   // Search + filter
   const [search, setSearch] = useState("");
@@ -111,16 +114,18 @@ export default function Dashboard() {
     }
   };
 
-  const deleteEvent = async (id) => {
-    if (!confirm("Delete this event?")) return;
+  const deleteEvent = async () => {
+    if (!deletingEventId) return;
     try {
-      await axios.delete(`${API_URL}/api/events/${id}`, {
+      await axios.delete(`${API_URL}/api/events/${deletingEventId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      setDeletingEventId(null);
       fetchEvents();
     } catch (err) {
       console.log(err);
       alert("Delete failed");
+      setDeletingEventId(null);
     }
   };
 
@@ -161,20 +166,20 @@ export default function Dashboard() {
       {/* Content */}
       <div className="relative z-10">
         {/* Navbar - Colorful & Compact */}
-        <nav className="glass sticky top-0 z-50 px-4 py-2 shadow-neon">
+        <nav className="glass sticky top-0 z-50 px-4 py-3 shadow-sm">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-3xl font-display font-black gradient-text neon-glow"
+              className="text-2xl font-display font-bold text-slate-900 dark:text-white"
             >
-              ✨ Eventify
+              Eventify
             </motion.div>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setDark(!dark)}
-                className="p-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-white hover:from-amber-500 hover:to-orange-600 transition-all shadow-neon-amber"
+                className="p-2 rounded-lg bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors"
               >
                 {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
@@ -183,7 +188,7 @@ export default function Dashboard() {
                   localStorage.removeItem("token");
                   window.location.href = "/";
                 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors font-medium"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>
@@ -219,13 +224,13 @@ export default function Dashboard() {
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.05, rotate: 2 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setIsCreating(!isCreating)}
-              className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-secondary via-purple-500 to-primary text-white rounded-xl shadow-xl shadow-secondary/30 hover:shadow-neon-pink transition-all font-semibold rainbow-border border-2"
+              className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm hover:shadow-md transition-all font-semibold"
             >
               <Plus className="w-5 h-5" />
-              ✨ Create Event
+              Create Event
             </motion.button>
           </div>
 
@@ -287,44 +292,38 @@ export default function Dashboard() {
           </AnimatePresence>
 
           {/* Event Grid - Vibrant & Colorful */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <AnimatePresence mode="popLayout">
               {paginatedEvents.map((e, index) => {
-                const cardColors = ['glass-card-1', 'glass-card-2', 'glass-card-3', 'glass-card-4', 'glass-card-5', 'glass-card-6'];
-                const cardClass = cardColors[index % cardColors.length];
-
                 return (
                   <motion.div
                     key={e._id}
                     layout
-                    initial={{ opacity: 0, scale: 0.9, y: 20, rotate: -2 }}
-                    animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                    whileHover={{ y: -8, rotate: 1, transition: { duration: 0.2 } }}
-                    className={`${cardClass} glass-card p-4 hover:shadow-2xl transition-all duration-300 group relative overflow-hidden border-2`}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                    className="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-300 group"
                   >
-                    {/* Shimmer effect on hover */}
-                    <div className="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
                     <div className="relative z-10">
                       <div className="flex justify-between items-start mb-3">
-                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-white/40 to-white/20 dark:from-white/30 dark:to-white/10 text-gray-900 dark:text-white border-2 border-white/50 dark:border-white/30 backdrop-blur-sm shadow-lg uppercase tracking-wide">
+                        <span className="px-3 py-1 rounded-md text-xs font-semibold bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
                           {e.category || "General"}
                         </span>
                         <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                           <motion.button
-                            whileHover={{ scale: 1.15, rotate: 10 }}
-                            whileTap={{ scale: 0.9 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
                             onClick={() => openEditModal(e)}
-                            className="p-1.5 rounded-lg bg-white/50 dark:bg-white/20 text-primary hover:text-secondary hover:bg-white/70 dark:hover:bg-white/30 transition-colors backdrop-blur-sm shadow-md"
+                            className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
                           >
                             <Edit2 className="w-4 h-4" />
                           </motion.button>
                           <motion.button
-                            whileHover={{ scale: 1.15, rotate: -10 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={() => deleteEvent(e._id)}
-                            className="p-1.5 rounded-lg bg-white/50 dark:bg-white/20 text-danger hover:bg-red-100 dark:hover:bg-red-500/30 transition-colors backdrop-blur-sm shadow-md"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setDeletingEventId(e._id)}
+                            className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-red-600 dark:text-red-400 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
                           </motion.button>
@@ -333,17 +332,13 @@ export default function Dashboard() {
 
                       <h3 className="text-lg font-display font-bold mb-2 text-gray-900 dark:text-white leading-tight">{e.title}</h3>
 
-                      <div className="space-y-1.5 text-sm">
-                        <div className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                          <div className="p-1 rounded-lg bg-primary/20 dark:bg-primary/10">
-                            <Calendar className="w-3.5 h-3.5 text-primary" />
-                          </div>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                          <Calendar className="w-4 h-4 text-slate-500 dark:text-slate-400" />
                           <span className="font-medium">{e.date?.slice(0, 10) || "No date"}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-gray-700 dark:text-gray-200">
-                          <div className="p-1 rounded-lg bg-secondary/20 dark:bg-secondary/10">
-                            <MapPin className="w-3.5 h-3.5 text-secondary" />
-                          </div>
+                        <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                          <MapPin className="w-4 h-4 text-slate-500 dark:text-slate-400" />
                           <span className="font-medium">{e.location || "No location"}</span>
                         </div>
                       </div>
@@ -383,12 +378,12 @@ export default function Dashboard() {
                 {Array.from({ length: totalPages }, (_, i) => (
                   <motion.button
                     key={i}
-                    whileHover={{ scale: page !== i + 1 ? 1.1 : 1 }}
+                    whileHover={{ scale: page !== i + 1 ? 1.05 : 1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setPage(i + 1)}
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center font-semibold transition-all duration-300 ${page === i + 1
-                      ? "bg-gradient-to-br from-primary to-secondary text-white shadow-xl shadow-primary/30 scale-110"
-                      : "bg-surface dark:bg-surface-dark/50 text-muted dark:text-muted-dark hover:bg-surface/80 dark:hover:bg-surface-dark hover:text-text dark:hover:text-text-dark hover:shadow-lg backdrop-blur-sm"
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center font-semibold transition-all ${page === i + 1
+                      ? "bg-indigo-600 text-white shadow-sm"
+                      : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
                       }`}
                   >
                     {i + 1}
@@ -492,6 +487,46 @@ export default function Dashboard() {
                     </button>
                   </div>
                 </form>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Delete Confirmation Modal */}
+        <AnimatePresence>
+          {deletingEventId && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white dark:bg-slate-800 w-full max-w-md p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 rounded-lg bg-red-100 dark:bg-red-900/30">
+                    <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white">Delete Event?</h3>
+                </div>
+
+                <p className="text-slate-600 dark:text-slate-300 mb-6">
+                  Are you sure you want to delete this event? This action cannot be undone.
+                </p>
+
+                <div className="flex justify-end gap-3">
+                  <button
+                    onClick={() => setDeletingEventId(null)}
+                    className="px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={deleteEvent}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                  >
+                    Delete Event
+                  </button>
+                </div>
               </motion.div>
             </div>
           )}
